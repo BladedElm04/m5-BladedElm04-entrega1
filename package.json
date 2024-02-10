@@ -7,7 +7,7 @@
     "dev": "dotenv -e .env.develop -- tsnd --respawn src/server.ts",
     "migrate:dev": "dotenv -e .env.develop -- npx prisma migrate dev",
     "test": "dotenv -e .env.test -- vitest",
-    "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev"    
+    "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,11 @@
   "dependencies": {
     "@prisma/client": "^5.6.0",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^7.1.0",
+    "reflect-metadata": "^0.2.1",
+    "tsyringe": "^4.8.0",
+    "zod": "^3.22.4"
   }
 }
