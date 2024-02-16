@@ -12,7 +12,7 @@ const taskController = container.resolve(TaskControllers);
 
 const ensure = new EnsureMiddleware();
 
-tasksRouter.post("/", ensure.validateBody(createTaskSchema), ensure.onCreateTaskCategoryIdExist, (req, res) => taskController.create(req, res));
+tasksRouter.post("/", ensure.validateBody(createTaskSchema),ensure.onCreateTaskCategoryIdExist, (req, res) => taskController.create(req, res));
 
 tasksRouter.get("/", (req, res) => taskController.readAll(req, res));
 

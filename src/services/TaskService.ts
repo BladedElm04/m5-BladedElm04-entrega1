@@ -2,16 +2,16 @@ import { Task } from "@prisma/client";
 import { TCategory, TCreateTask, TTask, TUpdateTask } from "../interfaces";
 import { prisma } from "../database/prisma";
 import { injectable } from "tsyringe";
-import { TReturnTask } from "../interfaces/tasks.interfaces";
+import { TReturnCreatedTask, TReturnTask } from "../interfaces/tasks.interfaces";
 import { returnTaskSchema } from "../schemas/tasks.schema";
 
 
 @injectable()
 export class TaskService {
-    create = async (payload: TCreateTask): Promise<TReturnTask> => {
-        const newTask = await prisma.task.create({ data: payload, include: {category: true}});
+    create = async (payload: TCreateTask): Promise<TReturnCreatedTask> => {
+        const newTask = await prisma.task.create({ data: payload });
 
-        return returnTaskSchema.parse(newTask);
+        return newTask
     };
 
     readAll = async (category?: string | undefined): Promise<Array<TReturnTask>> => {

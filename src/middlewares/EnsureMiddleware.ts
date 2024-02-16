@@ -28,6 +28,11 @@ export class EnsureMiddleware {
     onCreateTaskCategoryIdExist = async (req: Request, res: Response, next: NextFunction):Promise<Response | void> => {
 
         const categoryId = req.body.categoryId;
+
+        if(!categoryId){
+            return next();
+        }
+
         const foundCategory = await prisma.category.findFirst({where: {id: Number(categoryId)}});
 
         if(!foundCategory){
@@ -41,6 +46,11 @@ export class EnsureMiddleware {
     onUpdateTaskCategoryIdExist = async (req: Request, res: Response, next: NextFunction):Promise<Response | void> => {
 
         const categoryId = req.body.categoryId;
+
+        if(!categoryId){
+            return next();
+        }
+
         const foundCategory = await prisma.category.findFirst({where: {id: Number(categoryId)}});
 
         if(!foundCategory){
