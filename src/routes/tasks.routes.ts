@@ -12,14 +12,14 @@ const taskController = container.resolve(TaskControllers);
 
 const ensure = new EnsureMiddleware();
 
-tasksRouter.post("/", ensure.validateBody(createTaskSchema),ensure.onCreateTaskCategoryIdExist, (req, res) => taskController.create(req, res));
+tasksRouter.post("/",ensure.validadeToken, ensure.validateBody(createTaskSchema),ensure.onCreateTaskCategoryIdExist, (req, res) => taskController.create(req, res));
 
-tasksRouter.get("/", (req, res) => taskController.readAll(req, res));
+tasksRouter.get("/",ensure.validadeToken, (req, res) => taskController.readAll(req, res));
 
-tasksRouter.use("/:id", ensure.idExist)
+tasksRouter.use("/:id",ensure.validadeToken, ensure.idExist)
 
-tasksRouter.get("/:id", (req, res) => taskController.readOne(req, res));
+tasksRouter.get("/:id", ensure.verifyUserTask, (req, res) => taskController.readOne(req, res));
 
-tasksRouter.patch("/:id", ensure.validateBody(updateTaskSchema), ensure.onUpdateTaskCategoryIdExist, (req, res) => taskController.update(req, res));
+tasksRouter.patch("/:id", ensure.validateBody(updateTaskSchema), ensure.onUpdateTaskCategoryIdExist, ensure.verifyUserTask, (req, res) => taskController.update(req, res));
 
-tasksRouter.delete("/:id", (req, res) => taskController.delete(req, res));
+tasksRouter.delete("/:id", ensure.verifyUserTask, (req, res) => taskController.delete(req, res));

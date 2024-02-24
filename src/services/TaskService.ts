@@ -8,13 +8,16 @@ import { returnTaskSchema } from "../schemas/tasks.schema";
 
 @injectable()
 export class TaskService {
-    create = async (payload: TCreateTask): Promise<TReturnCreatedTask> => {
-        const newTask = await prisma.task.create({ data: payload });
+    create = async (userId: number , payload: TCreateTask): Promise<TReturnCreatedTask> => {
+        
+        const newTask = {...payload, userId}
+        
+        const Task = await prisma.task.create({ data: newTask });
 
-        return newTask
+        return Task
     };
 
-    readAll = async (category?: string | undefined): Promise<Array<TReturnTask>> => {
+    readAll = async (userId: number,category?: string | undefined): Promise<Array<TReturnTask>> => {
         
         if (category) {
             return await prisma.task.findMany({ 
@@ -22,23 +25,23 @@ export class TaskService {
                 include: {category: true}
                 })
         } 
-        const allTasks = await prisma.task.findMany({include: {category: true}});
+        const allTasks = await prisma.task.findMany({ where:{ userId },include: {category: true}});
         
         return returnTaskSchema.array().parse(allTasks)
 
     };
 
-    readOne = async (taskId: number): Promise<TReturnTask | null> => {
-        const task = await prisma.task.findFirst({where: {id: taskId}, include: {category: true}});
+    readOne = async (userId: number,taskId: number): Promise<TReturnTask | null> => {
+        const task = await prisma.task.findFirst({where: {userId , id: taskId}, include: {category: true}});
 
         return returnTaskSchema.parse(task)
     };
 
-    update = async (taskId: number, payload: TUpdateTask): Promise<Task | null> => {
-        return await prisma.task.update({where: {id: taskId}, data: payload})
+    update = async (userId: number ,taskId: number, payload: TUpdateTask): Promise<Task | null> => {
+        return await prisma.task.update({where: { userId, id: taskId }, data: payload})
     };
 
-    delete = async (taskId: number): Promise<void> => {
-        await prisma.task.delete({where: { id: taskId }})
+    delete = async (userId:number, taskId: number): Promise<void> => {
+        await prisma.task.delete({where: { userId, id: taskId }})
     }
 }

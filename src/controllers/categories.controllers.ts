@@ -8,7 +8,9 @@ export class CategoriesController {
     constructor (@inject("CategoriesService") private categoriesServices: CategoriesService) {};
 
     create = async (req: Request, res: Response): Promise<Response> => {
-        const newCategory = await this.categoriesServices.create(req.body);
+        const id = res.locals.decode.id
+
+        const newCategory = await this.categoriesServices.create(id ,req.body);
 
         return res.status(201).json(newCategory);
     };

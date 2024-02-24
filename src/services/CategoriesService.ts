@@ -5,8 +5,14 @@ import { injectable } from "tsyringe";
 
 @injectable()
 export class CategoriesService {
-    create = async (payload: TCreateCategory): Promise<Category> => {
-        return await prisma.category.create({data: payload});
+    create = async (userId: number, payload: TCreateCategory): Promise<Category> => {
+        
+        const newCategory = {
+            ...payload,
+            userId
+        }
+
+        return await prisma.category.create({data: newCategory});
     };
 
     delete = async (id: number): Promise<void> => {

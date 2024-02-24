@@ -12,6 +12,6 @@ const categoriesControllers = container.resolve(CategoriesController);
 
 const ensure = new EnsureMiddleware();
 
-categoriesRouter.post("/", ensure.validateBody(createCategorySchema),(req, res)=> categoriesControllers.create(req, res));
+categoriesRouter.post("/",ensure.validadeToken, ensure.validateBody(createCategorySchema),(req, res)=> categoriesControllers.create(req, res));
 
-categoriesRouter.delete("/:id", ensure.categoryIdExist, (req, res) => categoriesControllers.delete(req, res));
+categoriesRouter.delete("/:id", ensure.validadeToken, ensure.categoryIdExist, ensure.verifyUserCategory, (req, res) => categoriesControllers.delete(req, res));
