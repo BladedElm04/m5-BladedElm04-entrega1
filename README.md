@@ -195,3 +195,87 @@ STATUS (404) - Categoria inválida
     "message": "Category not found"
 }
 ```
+
+### Cadastro de usuário POST /users
+
+Padrão de corpo
+
+```json
+{
+    "name": "John Doe",
+    "email": "johndoe@email.com",
+    "password": "12345678"
+}
+```
+
+Padrão de resposta (STATUS 201)
+
+```json
+{
+    "id": 1,
+    "name": "John Doe",
+    "email": "johndoe@email.com"
+}⁠
+```
+
+#### Possíveis erros:
+
+STATUS (409) - E-mail já cadastrado
+
+```json
+{ "message": "This email is already registered" }
+```
+
+STATUS (400) quando o corpo não é compatível com o padrão
+
+### Login de usuário POST /user/login
+
+Padrão de corpo
+
+```json
+{
+    "email": "johndoe@email.com",
+    "password": "12345678"
+}
+```
+
+Padrão de resposta (200)
+
+```json
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAxMjcwMjk2LCJleHAiOjE3MDEzMTM0OTZ9.Ebru139GF02sx9EFR0PouLrErYyYIcFJgLa6vIfsktA",
+	"user": {
+		"id": 1,
+		"name": "John Doe",
+		"email": "johndoe@email.com"
+    }
+}
+```
+
+#### Possíveis erros:
+
+STATUS (404) - Usuário não existente
+
+```json
+{ "messsage": "User not exists" }
+```
+
+STATUS (401) - E-mail e senha não correspondem
+
+```json
+{ "messsage": "Email and password doesn't match" }
+```
+
+STATUS (409) quando o corpo não é compatível com o padrão
+
+### Recuperação de usuário /users/profile (Precisa de autorização)
+
+Padrão de resposta (200)
+
+```json
+{
+    "id": 1,
+    "name": "John Doe",
+    "email": "johndoe@email.com"
+}
+```
